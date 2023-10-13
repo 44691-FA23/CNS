@@ -1,0 +1,2 @@
+# CNS
+Campus Navigation Service
