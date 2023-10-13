@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #image {
+            position: relative;
+        }
+
+        /* Example styling for clickable areas */
+        area {
+            cursor: pointer;
+            opacity: 0.6;
+        }
+
+        /* Styling for form elements */
+        form {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="img.JPG" usemap="#image-map" id="image" />
+
+    <map name="image-map">
+        <area shape="rect" coords="830,129,876,173" onclick="handleClick('CH-2760')" />
+        <area shape="rect" coords="851,12,891,56" onclick="handleClick('CH-2820')" />
+    </map>
+
+    <form>
+        <label for="source">Source:</label>
+        <input type="text" id="source" name="source" readonly />
+
+        <label for="destination">Destination:</label>
+        <input type="text" id="destination" name="destination" readonly />
+
+        <button type="button" onclick="showPath()">Show Path</button>
+    </form>
+
+    <script>
+        var sourceField = document.getElementById("source");
+        var destinationField = document.getElementById("destination");
+        var currentField = sourceField;
+
+        function handleClick(regionName) {
+            if (currentField === sourceField) {
+                sourceField.value = regionName;
+                currentField = destinationField;
+            } else {
+                destinationField.value = regionName;
+                currentField = sourceField;
+            }
+        }
+
+        function showPath() {
+            var source = sourceField.value;
+            var destination = destinationField.value;
+
+            if (source && destination) {
+                var confirmation = confirm(`Do you want to view Path from ${source} to ${destination}.?`);
+
+                if (confirmation) {
+                    // Change the URL to the desired page
+                    window.location.href = 'another-page.html'; // Replace 'another-page.html' with the actual URL
+                }
+            } else {
+                alert("Please select both source and destination.");
+            }
+        }
+    </script>
+</body>
+
+</html>
