@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Lines Animation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('img.JPG') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        polyline {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke:  rgba(0, 0, 0, 0.5);}
+
+        svg {
+            width: 80%;
+            max-width: 800px;
+        }
+/*
+        div {
+            width: 15px;
+            height: 15px;
+            background: red;
+            position: absolute;
+            animation-name: Player1;
+            animation-duration: 100s;
+            animation-timing-function: 🚶;
+            animation-delay: 0s;
+            animation-iteration-count: 5;
+            animation-direction: normal;
+            animation-play-state: running;
+        }
+*/
+div {
+           /* font-size: 24px; /* Set the font size to adjust the emoji size */
+            animation: moveEmoji 5s linear infinite; /* Apply the animation */
+            width: 15px;
+            height: 15px;
+           /* background: red; */
+            position: absolute;
+            animation-name: Player1;
+            animation-duration: 10s;
+            animation-delay: 0s;
+            animation-iteration-count: 1;
+            animation-timing-function: 🚶;
+            animation-direction: normal;
+            animation-play-state: running;
+} 
+
+        @keyframes Player1 {
+            0% {
+                /* background: red; */
+                left: 798px;
+                top: 151px;
+            }
+
+            25% {
+                 /* background: yellow; */
+                left: 798px;
+                top: 320px;
+            }
+
+            50% {
+               /* background: blue; */
+                left: 910px;
+                top: 320px;
+            }
+
+            75% {
+               /* background: green; */
+                left: 912px;
+                top: 153px;
+            }
+
+           /** 100% {
+                background: red;
+                left: 0px;
+                top: 0px;
+            } */
+        }
+    </style>
+</head>
+
+<body>
+    <div><a href="#" target="_blank">🚶</a></div>
+    <svg>
+        <polyline points="170,304 237,305 402,106 384,107 383,175"></polyline>
+    </svg>
+
+    <script>
+        var googleMapsLink = "https://www.google.com/maps/d/embed?mid=10SsLidlMSah2SQKm-itpf25XJSkYHCc&ehbc=2E312F";
+
+        document.querySelector('div a').addEventListener('click', function(event) {
+            event.preventDefault();
+            window.open(googleMapsLink, '_blank');
+        });
+
+       
+    </script>
+</body>
+
+</html>
