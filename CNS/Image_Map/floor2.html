@@ -56,6 +56,8 @@
     <map name="image-map">
         <area shape="rect" coords="830,129,876,173" onclick="handleClick('CH-2760')" />
         <area shape="rect" coords="851,12,891,56" onclick="handleClick('CH-2820')" />
+        <area shape="rect" coords="828,230,878,269" onclick="handleClick('CH-2850')" />
+        <area shape="rect" coords="957,277,1008,317" onclick="handleClick('CH-2665')" />
     </map>
 
     <form>
@@ -65,7 +67,10 @@
         <label for="destination">Destination:</label>
         <input type="text" id="destination" name="destination" readonly />
 
-        <button type="button" onclick="showPath()">Show Path</button>
+        <button type="button" onclick="showPath()">Show Path 1</button>
+        <button type="button" onclick="showPath1()">Show Path 2</button>
+
+
     </form>
 
     <script>
@@ -93,6 +98,22 @@
                 if (confirmation) {
                     // Change the URL to the desired page
                     window.location.href = 'another-page.html'; // Replace 'another-page.html' with the actual URL
+                }
+            } else {
+                alert("Please select both source and destination.");
+            }
+        }
+
+        function showPath1() {
+            var source = sourceField.value;
+            var destination = destinationField.value;
+
+            if (source && destination) {
+                var confirmation = confirm(`Do you want to view Path from ${source} to ${destination}.?`);
+
+                if (confirmation) {
+                    // Change the URL to the desired page
+                    window.location.href = 'svgdraw.html'; // Replace 'another-page.html' with the actual URL
                 }
             } else {
                 alert("Please select both source and destination.");
