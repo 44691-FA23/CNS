@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrollable and Zoomable Sections</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+        }
+
+        .section {
+            flex: 1;
+            height: 100vh; /* 100% of the viewport height */
+            overflow-y: scroll; /* Enable vertical scrolling */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Customize styling as needed */
+        #section1 {
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #section1 img {
+            max-width: 100%; /* Ensure the image does not exceed the container width */
+            max-height: 100%; /* Ensure the image does not exceed the container height */
+            object-fit: contain; /* Ensure the entire image is visible */
+            cursor: zoom-in; /* Change cursor to indicate zoom-in functionality */
+            transition: transform 0.3s ease; /* Add smooth transition for zoom effect */
+        }
+
+        #section2 {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="section" id="section1">
+            <!-- Content for the first section -->
+            <h2>The path goes below..</h2>
+            <img id="zoomableImage" src="images/2760_2820.jpg" alt="Image description">
+        </div>
+
+        <div class="section" id="section2">
+            <!-- Content for the second section -->
+            <h2>Route Preview</h2>
+            <p>1. Make Sure you were at the right source destination.</p>
+            <p>2. Turn left and move forward until you see the connection to the main hallway.</p>
+            <p>3. Now Turn right and go forward til you see steps towards your left. STOP there.</p>
+            <p>4. Please turn right, you destination will be on your right side.</p>
+        </div>
+    </div>
+
+    <script>
+        const zoomableImage = document.getElementById('zoomableImage');
+        let zoomed = false;
+
+        zoomableImage.addEventListener('click', () => {
+            zoomed = !zoomed;
+
+            if (zoomed) {
+                zoomableImage.style.transform = 'scale(2)';
+                zoomableImage.style.transformOrigin = 'top center';
+            } else {
+                zoomableImage.style.transform = 'scale(1)';
+            }
+        });
+    </script>
+
+</body>
+</html>
