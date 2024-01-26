@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Coordinates</title>
+    <script>
+        function showCoordinates(event) {
+            var x = event.pageX;
+            var y = event.pageY;
+            document.getElementById("coordinates").innerHTML = "X: " + x + ", Y: " + y;
+        }
+    </script>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('images/CH_2.jpg'); /* Replace 'background.jpg' with the path to your background image */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: black;
+            font-family: Arial, sans-serif;
+        }
+
+        #coordinates {
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body onclick="showCoordinates(event)">
+    <div id="coordinates"></div>
+</body>
+
+</html>
