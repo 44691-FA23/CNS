@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathfinder</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        #mazeCanvas {
+            border: 2px solid #333;
+            background-color: #fff;
+            pointer-events: auto;
+        }
+
+        canvas:focus {
+            outline: none;
+        }
+
+        h1 {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            font-size: 80px;
+        }
+
+        #directions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            font-size: 20px;
+            text-align: left;
+            background-color: lightblue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Colden Hall Floor 2 <br> Navigation</h1>
+    <canvas id="mazeCanvas" width="{{ WIDTH }}" height="{{ HEIGHT }}"></canvas>
+    <div id="directions"></div>
+    <script>
+        var canvas = document.getElementById("mazeCanvas");
+        var ctx = canvas.getContext("2d");
+        var WIDTH = {{ WIDTH }};
+        var HEIGHT = {{ HEIGHT }};
+        var BLOCKSIZE = {{ BLOCKSIZE }};
+        var WORLD = {{ WORLD | tojson }};
+        var type = "SET_START";
+
+        function drawWorld() {
+            for (var i = 0; i < WORLD.length; i++) {
+                for (var j = 0; j < WORLD[0].length; j++) {
+                    var x = j * BLOCKSIZE;
+                    var y = i * BLOCKSIZE;
+
+                    if (WORLD[i][j] == 1) {
+                        ctx.fillStyle = "rgb(125, 154, 179)";
+                    } else if (WORLD[i][j] == 0) {
+                        ctx.fillStyle = "rgb(224, 169, 150)";
+                    } else if (WORLD[i][j] == "s") {
+                        ctx.fillStyle = "rgb(29, 34, 173)";
+                    } else if (WORLD[i][j] == "d") {
+                        ctx.fillStyle = "rgb(181, 14, 31)";
+                    } else if (WORLD[i][j] == "#") {
+                        ctx.fillStyle = "rgb(59, 212, 75)";
+                    }
+
+                    ctx.fillRect(x, y, BLOCKSIZE, BLOCKSIZE);
+
+                    // Add text in the center of each grid box
+                    ctx.fillStyle = "black";
+                    ctx.font = "15px Arial";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.fillText(`${i},${j}`, x + BLOCKSIZE / 2, y + BLOCKSIZE / 2);
+                }
+            }
+        }
+
+        function drawGrid() {
+            for (var i = 0; i < WIDTH; i += BLOCKSIZE) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, HEIGHT);
+                ctx.strokeStyle = "rgb(255, 255, 255)";
+                ctx.stroke();
+            }
+
+            for (var j = 0; j < HEIGHT; j += BLOCKSIZE) {
+                ctx.beginPath();
+                ctx.moveTo(0, j);
+                ctx.lineTo(WIDTH, j);
+                ctx.strokeStyle = "rgb(255, 255, 255)";
+                ctx.stroke();
+            }
+        }
+
+        function updateWorld(i, j, type) {
+            fetch('/update_world', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ i: i, j: j, type: type })
+            })
+            .then(response => response.json())
+            .then(data => {
+                WORLD = data.WORLD;
+                drawWorld();
+                drawGrid();
+            });
+        }
+
+        function findShortestPath() {
+            fetch('/find_shortest_path', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                WORLD = data.WORLD;
+                drawWorld();
+                drawGrid();
+                displayDirections(data.directions);
+            });
+        }
+
+        function displayDirections(directions) {
+            var directionsElement = document.getElementById("directions");
+            directionsElement.innerHTML = "<strong>Directions:</strong><br>";
+
+            for (var i = 0; i < directions.length; i++) {
+                directionsElement.innerHTML += directions[i] + "<br>";
+            }
+        }
+
+        var pressed = false;
+
+        canvas.addEventListener("mousedown", function(e) {
+            var rect = canvas.getBoundingClientRect();  // Get the canvas position
+            var mouseX = e.clientX - rect.left;  // Adjust mouse coordinates based on canvas position
+            var mouseY = e.clientY - rect.top;
+
+            var i = Math.floor(mouseY / BLOCKSIZE);
+            var j = Math.floor(mouseX / BLOCKSIZE);
+
+            if (e.button === 0) {
+                if (WORLD[i][j] == 1) {
+                    if (type == "SET_START") {
+                        updateWorld(i, j, "SET_START");
+                        type = "SET_DESTINATION";
+                    } else if (type == "SET_DESTINATION") {
+                        updateWorld(i, j, "SET_DESTINATION");
+                        type = "SET_OBSTACLE";
+                    } else if (type == "SET_OBSTACLE") {
+                        updateWorld(i, j, "SET_OBSTACLE");
+                        pressed = true;
+                    }
+                }
+            }
+        });
+
+        canvas.addEventListener("mouseup", function() {
+            if (type == "SET_OBSTACLE" && pressed) {
+                pressed = false;
+            }
+        });
+
+        canvas.addEventListener("mousemove", function(e) {
+            if (type == "SET_OBSTACLE" && pressed) {
+                var rect = canvas.getBoundingClientRect();
+                var mouseX = e.clientX - rect.left;
+                var mouseY = e.clientY - rect.top;
+                var i = Math.floor(mouseY / BLOCKSIZE);
+                var j = Math.floor(mouseX / BLOCKSIZE);
+
+                if (WORLD[i][j] != "s" && WORLD[i][j] != "d") {
+                    updateWorld(i, j, "SET_OBSTACLE");
+                }
+            }
+        });
+
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "Backspace") {
+                location.reload();
+            }
+        });
+
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                findShortestPath();
+            }
+        });
+
+        drawWorld();
+        drawGrid();
+    </script>
+</body>
+</html>
