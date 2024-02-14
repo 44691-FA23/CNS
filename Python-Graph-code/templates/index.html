@@ -44,7 +44,7 @@
             color: #333;
             font-size: 20px;
             text-align: left;
-            background-color: lightblue;
+            background-color: rgb(228, 140, 51);
         }
     </style>
 </head>
@@ -61,8 +61,6 @@
         var WORLD = {{ WORLD | tojson }};
         var type = "SET_START";
 
-        function drawWorld() {
-            for (var i = 0; i < WORLD.length; i++) {
         var gridText = {
             "0,0": "1111",
             "0,1": "1234",
