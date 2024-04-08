@@ -21,14 +21,15 @@ fixed_walls = [(14,1), (14,3), (15,1), (15,3), (16,1), (17,1), (18,1), (14,4), (
 
 for wall in fixed_walls:
     i, j = wall
-    WORLD[i][j] = 0  # Set the value to 0 to represent a wall
+    WORLD[i][j] = 0  
 
 start, end = None, None
 operation = "SET_START"
 
-
 @app.route('/')
 def index():
+    global start, end
+    start, end = None, None
     return render_template('index.html', WIDTH=WIDTH, HEIGHT=HEIGHT, BLOCKSIZE=BLOCKSIZE, WORLD=WORLD)
 
 
