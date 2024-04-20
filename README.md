@@ -13,3 +13,13 @@ The main objective of this project is to improve the overall campus experience f
   <li>Joyce Meyer Lingam </li>
   <li>SVSS Charan Teja Tallam </li>
 </ul> 
+
+## Steps to Run the application
+
+- Clone the repository
+- navigate to Python-Graph-code folder
+- run the command "python app.py" in the terminal to start the application
+- In the main open index.html in any browser
+- you should be able to see the **navigate** button on the top right corner which will take you to the python grid for navigation.
+- For better experience make sure your browser window size is set to 50%
+
