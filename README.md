@@ -23,3 +23,4 @@ The main objective of this project is to improve the overall campus experience f
 - you should be able to see the **navigate** button on the top right corner which will take you to the python grid for navigation.
 - For better experience make sure your browser window size is set to 50%
 
+![image](https://github.com/44691-FA23/CNS/assets/123036331/1f46bc82-16d3-4c1d-9c15-84d7dffa2493)
